@@ -194,6 +194,7 @@ def train(
         dataset_train = ConcatDataset([real_dataset_train, fake_melgan_train])
         dataset_test = ConcatDataset([real_dataset_test, fake_melgan_test])
         pos_weight = len(real_dataset_train) / len(fake_melgan_train)
+        # pos_weight = 0.1
     else:
         fake_dirs = list(fake_dir.glob("ljspeech_*"))
         assert len(fake_dirs) == 7
@@ -266,7 +267,7 @@ def eval_only(
     device: str = "cuda" if torch.cuda.is_available else "cpu",
     batch_size: int = 32,
     save_dir: Union[str, Path] = None,
-    test_size: float = 0.2,
+    test_size: float = 1,
     feature_classname: str = "wave",
     model_classname: str = "SimpleLSTM",
     in_distribution: bool = True,
@@ -405,7 +406,7 @@ def experiment(
     seed: Optional[int] = None,
     amount_to_use: Union[int, None] = None,
     restore: bool = False,
-    eval_only: bool = False,
+    is_eval_only: bool = False,
     **kwargs,
 ):
 
@@ -426,7 +427,7 @@ def experiment(
 
     LOGGER.info(f"Batch size: {batch_size}, seed: {seed}, epochs: {epochs}")
 
-    if eval_only:
+    if is_eval_only:
         eval_only(
             real_dir=real_dir,
             fake_dir=fake_dir,
@@ -537,7 +538,7 @@ def parse_args():
         "--in_distribution",
         "--in_dist",
         help="Whether to use in distribution experiment setup. (default: True)",
-        choices=["True", "False"],
+        choices=[True, False],
         type=bool,
         default=True,
     )
@@ -603,7 +604,7 @@ def main():
             seed=args.seed if args.deterministic else None,
             amount_to_use=160 if args.debug else None,
             restore=args.restore,
-            eval_only=args.eval_only,
+            is_eval_only=args.eval_only,
         )
         printc(f">>>>> Experiment Done: {exp_name}\n\n")
     except Exception as e:
