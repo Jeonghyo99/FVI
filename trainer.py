@@ -226,13 +226,6 @@ class ModelTrainer(Trainer):
         y_true = []
         y_pred = []
 
-        sample = dataset_test[0]  # Get the first sample
-        print(sample)
-        sample = dataset_test[1]  # Get the first sample
-        print(sample)
-        sample = dataset_test[2]  # Get the first sample
-        print(sample)
-
 
         for i, (batch_x, _, _, batch_y) in enumerate(test_loader):
             LOGGER.info("Loading data for evaluation...1")
