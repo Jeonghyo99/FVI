@@ -198,7 +198,7 @@ class ModelTrainer(Trainer):
         dataset_test: Dataset,
         save_dir: Union[str, Path] = None,  # directory to save model predictions
         checkpoint: dict = None,
-    ) -> None:
+    ) -> int:
         if save_dir:
             save_dir: Path = Path(save_dir)
             if not save_dir.exists():
@@ -226,6 +226,8 @@ class ModelTrainer(Trainer):
         y_true = []
         y_pred = []
 
+        num_zero_preds = 0  # Add a counter for zero predictions
+
 
         for i, (batch_x, _, _, batch_y) in enumerate(test_loader):
             LOGGER.info("Loading data for evaluation...1")
@@ -251,6 +253,8 @@ class ModelTrainer(Trainer):
             # Log each prediction
             for j in range(curr_batch_size):
                 LOGGER.info(f"Audio file {i * self.batch_size + j}, target: {batch_y[j].item()}, prediction: {batch_pred[j].item()}")
+                if batch_pred[j].item() == 0:
+                    num_zero_preds += 1  # Increase the counter if the prediction is zero
 
         # get test accuracy
         test_acc = (num_correct / num_total) * 100
@@ -267,6 +271,9 @@ class ModelTrainer(Trainer):
             save_path = save_dir / "best_pred.json"
             save_pred(y_true, y_pred, save_path)
             LOGGER.info(f"Prediction Saved: {save_path}")
+
+        
+        return num_zero_preds  # Return the count of zero predictions
 
 
 """

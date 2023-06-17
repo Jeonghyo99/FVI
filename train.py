@@ -272,7 +272,7 @@ def eval_only(
     model_classname: str = "SimpleLSTM",
     in_distribution: bool = True,
     checkpoint=None,
-) -> None:
+) -> int:
     """
     Train a model on WaveFake data.
 
@@ -385,12 +385,14 @@ def eval_only(
 
     ###########################################################################
 
-    ModelTrainer(batch_size=batch_size, epochs=epochs, device=device).eval(
+    abcd = ModelTrainer(batch_size=batch_size, epochs=epochs, device=device).eval(
         model=model,
         dataset_test=dataset_test,
         save_dir=save_dir,
         checkpoint=checkpoint,
     )
+
+    return abcd
 
 
 def experiment(
