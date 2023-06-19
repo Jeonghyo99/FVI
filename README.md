@@ -1,6 +1,31 @@
-# Audio Deep Fake Detection
+# Fake Voice Investigator
 
-A Course Project for SUTD 50.039 Theory and Practice of Deep Learning (2022 Spring)
+```bash
+pip install flask-ngrok
+
+pip install pyngrok
+
+ngrok authtoken XXXXXXXXX # 자신의 ngrok authtoken으로 대체
+```
+
+```bash
+import os
+
+# fake 폴더 생성
+fake_folder = '/content/FVI/data/fake/ljspeech_melgan'
+os.makedirs(fake_folder, exist_ok=True)
+
+# real 폴더 생성
+real_folder = '/content/FVI/data/real'
+os.makedirs(real_folder, exist_ok=True)
+```
+
+```bash
+python FVIapp.py
+```
+
+
+# Audio Deepfake Detection
 
 Created by [Mark He Huang](https://markhh.com/), [Peiyuan Zhang](https://www.linkedin.com/in/lance-peiyuan-zhang-5b2886194/), [James Raphael Tiovalen](https://jamestiotio.github.io/), [Madhumitha Balaji](https://www.linkedin.com/in/madhu-balaji/), and [Shyam Sridhar](https://www.linkedin.com/in/shyam-sridhar/).
 
